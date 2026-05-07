@@ -1,0 +1,97 @@
+/* thor-cosmos · mkdocs-material extras (NVIDIA-green accent) */
+:root {
+  --md-primary-fg-color: #0a0a0a;
+  --md-primary-fg-color--light: #1a1a1a;
+  --md-primary-fg-color--dark: #000000;
+  --md-accent-fg-color: #76b900;
+  --tc-green: #76b900;
+  --tc-green-bright: #c4ff3e;
+  --tc-ink: #0a0a0a;
+  --tc-dim: #8a8a8a;
+  --tc-rule: rgba(118, 185, 0, 0.22);
+}
+
+[data-md-color-scheme="slate"] {
+  --md-default-bg-color: #0a0a0a;
+  --md-code-bg-color: #121212;
+  --md-code-hl-string-color: var(--tc-green-bright);
+}
+
+/* Hero tweaks for home page */
+.md-typeset h1 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.md-typeset h1 + p {
+  color: var(--tc-dim);
+  font-size: 1.05rem;
+}
+
+/* Inline code */
+.md-typeset code {
+  color: var(--tc-green);
+  background: rgba(118, 185, 0, 0.08);
+  padding: 0.15em 0.35em;
+  border-radius: 3px;
+  font-size: 0.92em;
+}
+[data-md-color-scheme="slate"] .md-typeset code {
+  color: var(--tc-green-bright);
+  background: rgba(196, 255, 62, 0.1);
+}
+
+/* Cards grid (mkdocs-material feature) */
+.grid.cards > ul > li {
+  border: 1px solid var(--tc-rule);
+  border-radius: 6px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.grid.cards > ul > li:hover {
+  border-color: var(--tc-green);
+  transform: translateY(-2px);
+}
+
+/* Tables */
+.md-typeset table:not([class]) {
+  border: 1px solid var(--tc-rule);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.md-typeset table:not([class]) th {
+  background: rgba(118, 185, 0, 0.08);
+  color: var(--tc-green);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.82em;
+}
+
+/* Admonitions: green accent */
+.md-typeset .admonition.note,
+.md-typeset details.note {
+  border-color: var(--tc-green);
+}
+.md-typeset .admonition.note > .admonition-title::before,
+.md-typeset details.note > summary::before {
+  background-color: var(--tc-green);
+}
+
+/* Mermaid tinting */
+.mermaid .flowchart-link { stroke: var(--tc-green) !important; }
+
+/* Monospace badges */
+.badge {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.75em;
+  background: rgba(118, 185, 0, 0.12);
+  color: var(--tc-green);
+  padding: 2px 8px;
+  border-radius: 3px;
+  border: 1px solid var(--tc-rule);
+}
+
+/* Logo bump on hero */
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+  height: 1.6rem;
+}

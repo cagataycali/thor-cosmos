@@ -1,0 +1,80 @@
+name: Auto Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+  packages: write
+  id-token: write
+
+jobs:
+  auto-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install build tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install build twine
+
+      - name: Extract version from tag
+        id: get_version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Releasing thor-cosmos v$VERSION"
+
+      - name: Build package
+        run: python -m build
+
+      - name: Publish to PyPI
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: twine upload dist/*
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: "thor-cosmos v${{ steps.get_version.outputs.version }}"
+          body: |
+            ## 🌌 thor-cosmos v${{ steps.get_version.outputs.version }}
+
+            Strands agent + `justfile` for the full NVIDIA Cosmos ecosystem on Jetson AGX Thor.
+
+            ### Install
+            ```bash
+            pipx install thor-cosmos==${{ steps.get_version.outputs.version }}
+            ```
+
+            ### Upgrade
+            ```bash
+            pipx upgrade thor-cosmos
+            ```
+
+            **Full Changelog**: https://github.com/cagataycali/thor-cosmos/compare/...${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+
+      - name: Summary
+        run: |
+          echo "## 🎉 Release Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version:** v${{ steps.get_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **PyPI:** https://pypi.org/project/thor-cosmos/${{ steps.get_version.outputs.version }}/" >> $GITHUB_STEP_SUMMARY
+          echo "- **GitHub Release:** https://github.com/cagataycali/thor-cosmos/releases/tag/v${{ steps.get_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY

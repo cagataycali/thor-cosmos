@@ -1,0 +1,18 @@
+# Robot-VLM client config (mirrors the cookbook intbot_edge_vlm recipe).
+rtp:
+  bind_ip: "0.0.0.0"
+  port: 5600
+  width: 800
+  height: 600
+  fps: 15
+  codec: "h264"
+
+vlm:
+  host: "127.0.0.1"
+  port: 8080
+  model: "trt-edgellm"
+
+nats:
+  host: "127.0.0.1"
+  port: 4222
+  subject: "perception.vlm"

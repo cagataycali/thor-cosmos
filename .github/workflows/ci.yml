@@ -1,0 +1,104 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dev deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff
+
+      - name: Ruff check
+        run: ruff check thor_cosmos/ || true
+
+      - name: Ruff format (check only)
+        run: ruff format --check thor_cosmos/ || true
+
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Syntax-check every tool
+        run: |
+          python3 -c "
+          import ast, pathlib, sys
+          errors = []
+          for p in pathlib.Path('thor_cosmos').rglob('*.py'):
+              try:
+                  ast.parse(p.read_text())
+              except SyntaxError as e:
+                  errors.append((str(p), str(e)))
+          if errors:
+              for f, e in errors:
+                  print(f'{f}: {e}')
+              sys.exit(1)
+          print(f'✓ {len(list(pathlib.Path(\"thor_cosmos\").rglob(\"*.py\")))} files parse OK')
+          "
+
+  just-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install just
+        run: |
+          curl -LsSf https://just.systems/install.sh | bash -s -- --to ~/bin
+          echo "$HOME/bin" >> $GITHUB_PATH
+
+      - name: just --list (recipe syntax sanity)
+        run: just --list
+
+      - name: Print effective env
+        run: just env
+
+  import:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python: ['3.10', '3.11', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+
+      - name: Import smoke
+        run: |
+          python3 -c "
+          import thor_cosmos
+          from thor_cosmos.tools import (
+            cosmos_inference, cosmos_serve, cosmos_build_engine,
+            cosmos_quantize, cosmos_export_onnx, cosmos_model_download,
+            cosmos_predict_generate, cosmos_transfer_generate,
+            cosmos_post_train, cosmos_distill, cosmos_curate, cosmos_evaluate,
+            cosmos_reason_hf, video_probe, video_extract_frames, image_read,
+            rtp_capture_frame, nats_publish, system_info,
+          )
+          print('✓ all 19 tools import cleanly')
+          "

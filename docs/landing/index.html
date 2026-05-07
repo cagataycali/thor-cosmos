@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+
+<title>thor-cosmos · NVIDIA Cosmos on Jetson AGX Thor</title>
+<meta name="description" content="Strands agent + justfile orchestrating the full NVIDIA Cosmos ecosystem — Reason2 (VLM), Predict2.5, Transfer2.5, Xenna — for Jetson AGX Thor edge deployment.">
+
+<meta property="og:site_name" content="thor-cosmos">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="website">
+<meta property="og:title" content="thor-cosmos · NVIDIA Cosmos on Jetson AGX Thor">
+<meta property="og:description" content="Real-time VLM perception on robots. Strands agent + justfile, one command surface for the full Cosmos lifecycle.">
+<meta property="og:image" content="https://cagataycali.github.io/thor-cosmos/assets/hero.svg">
+<meta name="author" content="Cagatay Cali">
+<meta name="twitter:creator" content="@cagataycali">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f4f4f1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="./" class="nav-brand">
+    <img src="favicon.svg" alt="thor-cosmos">
+    <span>thor-cosmos</span>
+  </a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#pipeline">Pipeline</a>
+    <a href="#install">Install</a>
+    <a href="../">Docs</a>
+    <a href="https://github.com/cagataycali/thor-cosmos">GitHub</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <img src="assets/hero.svg" alt="thor-cosmos" class="hero-logo" loading="lazy">
+  <h1>thor-cosmos</h1>
+  <p class="hero-sub">
+    NVIDIA Cosmos on Jetson AGX Thor — one <code>justfile</code>, one Strands agent, full lifecycle.
+  </p>
+
+  <div class="hero-cta">
+    <a href="#install" class="btn primary">Install</a>
+    <a href="../" class="btn">Read the docs</a>
+    <a href="https://github.com/cagataycali/thor-cosmos" class="btn">GitHub →</a>
+  </div>
+
+  <div class="install" id="install">
+    <span class="prompt">$</span>
+    <span>pipx install thor-cosmos &amp;&amp; thor-cosmos</span>
+  </div>
+
+  <div class="badges">
+    <img src="https://img.shields.io/pypi/v/thor-cosmos?color=76b900&style=flat-square" alt="PyPI">
+    <img src="https://img.shields.io/badge/python-3.10+-76b900?style=flat-square" alt="Python">
+    <img src="https://img.shields.io/badge/license-Apache--2.0-76b900?style=flat-square" alt="License">
+    <img src="https://img.shields.io/badge/agent-Strands-76b900?style=flat-square" alt="Strands">
+  </div>
+</section>
+
+<section class="section">
+  <p class="eyebrow">The Idea</p>
+  <h2>One command surface. Four Cosmos families. Full lifecycle.</h2>
+  <p style="font-size: 1.1em; max-width: 72ch;">
+    Every NVIDIA Cosmos upstream repo already ships a <code>justfile</code>.
+    thor-cosmos blends in: a single <code>justfile</code> with 42 recipes is the
+    <em>only</em> command surface. A Strands agent calls the same recipes an operator
+    would type — zero duplication, zero ambiguity.
+  </p>
+
+  <div class="stats">
+    <div class="stat"><span class="stat-v">19</span><span class="stat-l">Strands tools</span></div>
+    <div class="stat"><span class="stat-v">42</span><span class="stat-l">just recipes</span></div>
+    <div class="stat"><span class="stat-v">4</span><span class="stat-l">Cosmos families</span></div>
+    <div class="stat"><span class="stat-v">12</span><span class="stat-l">eval metrics</span></div>
+    <div class="stat"><span class="stat-v">&lt;200ms</span><span class="stat-l">VLM latency</span></div>
+  </div>
+</section>
+
+<section class="section" id="features">
+  <p class="eyebrow">Capabilities</p>
+  <h2>Cosmos on the edge.</h2>
+
+  <div class="feature-grid">
+    <div class="feature">
+      <p class="feature-title">Reason 2</p>
+      <h3>Real-time VLM on Thor</h3>
+      <p>FP8-quantized Cosmos-Reason2 running on TRT-Edge-LLM. HW-accel RTP capture, HTTP serving, &lt;200 ms end-to-end per frame.</p>
+    </div>
+    <div class="feature">
+      <p class="feature-title">Predict 2.5</p>
+      <h3>World model generation</h3>
+      <p>text→world · video→world · action-conditioned · multiview. Fine-tune with GR00T-Dreams patterns, evaluate with FID/FVD/TSE.</p>
+    </div>
+    <div class="feature">
+      <p class="feature-title">Transfer 2.5</p>
+      <h3>ControlNet video transfer</h3>
+      <p>edge · depth · seg · vis · multi-control. Image-prompt workflows for style-guided synthesis with structural fidelity.</p>
+    </div>
+    <div class="feature">
+      <p class="feature-title">Xenna</p>
+      <h3>7-stage data curation</h3>
+      <p>split → transcode → crop → filter → caption → dedup → shard. Ray-distributed. Same pipeline NVIDIA uses for Cosmos training corpora.</p>
+    </div>
+    <div class="feature">
+      <p class="feature-title">Training</p>
+      <h3>Post-train + distill</h3>
+      <p>Reason2 SFT/RL via cosmos-cli. Predict2.5 / Transfer2.5 torchrun. Step distillation (KD / DMD2) to shrink denoising steps.</p>
+    </div>
+    <div class="feature">
+      <p class="feature-title">Evaluation</p>
+      <h3>12 metrics out of the box</h3>
+      <p>FID · FVD · TSE · CSE · Sampson · blur-SSIM · Canny-F1 · depth-RMSE · seg-mIoU · DOVER · Reason-critic · Reason-reward.</p>
+    </div>
+    <div class="feature">
+      <p class="feature-title">Hot-reload agent</p>
+      <h3>Strands + self-healing</h3>
+      <p>19 tools ready. Parallel-by-default tool calls. Rich <code>ToolResult</code>s with embedded JPEG bytes for pass-through to VLM.</p>
+    </div>
+    <div class="feature">
+      <p class="feature-title">Operator + Agent</p>
+      <h3>Share muscle memory</h3>
+      <p><code>just &lt;recipe&gt;</code> from your shell. The agent runs the exact same thing. Operators see nothing new; the agent learns nothing foreign.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="pipeline">
+  <p class="eyebrow">Flagship Pipeline</p>
+  <h2>intbot_edge_vlm — real-time perception on Thor.</h2>
+
+  <p>Deploy Cosmos-Reason2 end-to-end: download → quantize → export → ship → build → serve → infer.</p>
+
+  <pre><code># x86 GPU host
+just prep-edge-model reason2-2b ./models/R2-fp8
+scp -r ./models/R2-fp8/onnx cagatay@thor.local:~/R2-fp8-onnx
+
+# Jetson AGX Thor
+ssh cagatay@thor.local
+cd ~/thor-cosmos
+just build-engines ~/R2-fp8-onnx ~/R2-fp8-engines
+just serve-start ~/R2-fp8-engines/llm ~/R2-fp8-engines/visual
+
+# Real-time loop (RTP → VLM → NATS)
+just perception-loop perception.vlm "describe the scene, count people"</code></pre>
+
+  <div class="pipeline">
+    <table>
+      <thead><tr><th>Stage</th><th>Recipe</th><th>Runs on</th></tr></thead>
+      <tbody>
+        <tr><td>Download</td><td><code>just download reason2-2b</code></td><td>x86</td></tr>
+        <tr><td>Quantize (FP8)</td><td><code>just quantize</code></td><td>x86 GPU</td></tr>
+        <tr><td>ONNX export (LLM)</td><td><code>just export-llm</code></td><td>x86</td></tr>
+        <tr><td>ONNX export (visual)</td><td><code>just export-visual</code></td><td>x86</td></tr>
+        <tr><td>Deploy</td><td><code>just deploy-thor</code></td><td>local → Thor</td></tr>
+        <tr><td>Build engines</td><td><code>just build-engines</code></td><td>Thor</td></tr>
+        <tr><td>Serve</td><td><code>just serve-start</code></td><td>Thor</td></tr>
+        <tr><td>Capture</td><td><code>just rtp-capture</code></td><td>Thor (gst HW)</td></tr>
+        <tr><td>Infer</td><td><code>just infer</code></td><td>Thor (HTTP)</td></tr>
+        <tr><td>Publish</td><td><code>just nats-publish</code></td><td>Thor → bus</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="section">
+  <p class="eyebrow">Design philosophy</p>
+  <h2>Thin Python. Thick justfile.</h2>
+
+  <p>Every agent tool is a ~30-line wrapper that calls <code>just_run(recipe, *args)</code>
+  and maps the output to a Strands <code>ToolResult</code>. All pipeline logic lives in
+  the <code>justfile</code>. New capability? Add a recipe. Wrap it. Done.</p>
+
+  <pre><code>@tool
+def cosmos_quantize(model_dir, output_dir, dtype="fp16", quantization="fp8"):
+    """Quantize a Cosmos VLM/LLM via `just quantize`."""
+    proc = just_run("quantize", model_dir, output_dir, dtype, quantization,
+                    timeout_s=60*60*3)
+    return proc_result(proc,
+        success_text=f"✅ quantized {model_dir} → {output_dir}",
+        fail_text=f"quantization failed: {proc.get('stderr','')[:200]}")</code></pre>
+</section>
+
+<footer>
+  <p>
+    Apache-2.0 · built on
+    <a href="https://github.com/nvidia-cosmos">NVIDIA Cosmos</a> +
+    <a href="https://strandsagents.com">Strands Agents</a> ·
+    <a href="https://github.com/cagataycali/thor-cosmos">GitHub</a>
+  </p>
+  <p>© 2026 cagataycali · thor-cosmos</p>
+</footer>
+
+</body>
+</html>
