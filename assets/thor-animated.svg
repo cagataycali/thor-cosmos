@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240" role="img" aria-label="thor-cosmos">
+  <defs>
+    <!-- Outer hex: NVIDIA-green gradient, rotating -->
+    <linearGradient id="hexGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#c4ff3e">
+        <animate attributeName="stop-color" values="#c4ff3e;#76b900;#c4ff3e" dur="4s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="50%" stop-color="#76b900"/>
+      <stop offset="100%" stop-color="#2a5700">
+        <animate attributeName="stop-color" values="#2a5700;#1a3d00;#2a5700" dur="5s" repeatCount="indefinite"/>
+      </stop>
+    </linearGradient>
+
+    <!-- Core glow -->
+    <radialGradient id="coreGlow" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="1">
+        <animate attributeName="stop-opacity" values="1;0.5;1" dur="2.5s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="30%" stop-color="#c4ff3e" stop-opacity="0.85"/>
+      <stop offset="70%" stop-color="#76b900" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#76b900" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Cosmos dust (noise) -->
+    <filter id="cosmos" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3">
+        <animate attributeName="seed" values="3;7;3" dur="10s" repeatCount="indefinite"/>
+      </feTurbulence>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.46  0 0 0 0 0.73  0 0 0 0 0.01  0 0 0 0.18 0"/>
+      <feComposite in2="SourceGraphic" operator="in"/>
+    </filter>
+
+    <!-- Soft glow -->
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2.2" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <!-- Hex path used multiple times -->
+    <symbol id="hex" viewBox="0 0 200 200">
+      <polygon points="100,10 180,55 180,145 100,190 20,145 20,55"
+               fill="none" stroke-width="3" stroke-linejoin="round"/>
+    </symbol>
+  </defs>
+
+  <!-- Background dust layer -->
+  <circle cx="120" cy="120" r="118" fill="#0a0a0a" opacity="0.04"/>
+  <circle cx="120" cy="120" r="90" fill="url(#coreGlow)" opacity="0.35"/>
+
+  <!-- Outer hex ring (slow rotate) -->
+  <g transform="translate(20 20)" filter="url(#softGlow)">
+    <use href="#hex" width="200" height="200" stroke="url(#hexGrad)">
+      <animateTransform attributeName="transform" type="rotate"
+        from="0 100 100" to="360 100 100" dur="24s" repeatCount="indefinite"/>
+    </use>
+  </g>
+
+  <!-- Middle hex (counter-rotate, dashed) -->
+  <g transform="translate(40 40)">
+    <polygon points="80,10 140,45 140,115 80,150 20,115 20,45"
+             fill="none" stroke="#76b900" stroke-width="2"
+             stroke-dasharray="4 6" opacity="0.75">
+      <animateTransform attributeName="transform" type="rotate"
+        from="360 80 80" to="0 80 80" dur="18s" repeatCount="indefinite"/>
+    </polygon>
+  </g>
+
+  <!-- Inner hex (solid fill) -->
+  <g transform="translate(70 70)">
+    <polygon points="50,6 92,30 92,72 50,96 8,72 8,30"
+             fill="#0a0a0a" stroke="#c4ff3e" stroke-width="1.5" opacity="0.92">
+      <animateTransform attributeName="transform" type="rotate"
+        from="0 50 50" to="360 50 50" dur="12s" repeatCount="indefinite"/>
+    </polygon>
+  </g>
+
+  <!-- Core pulse -->
+  <circle cx="120" cy="120" r="10" fill="url(#coreGlow)">
+    <animate attributeName="r" values="8;13;8" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="120" cy="120" r="4" fill="#ffffff">
+    <animate attributeName="opacity" values="1;0.6;1" dur="1.2s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Orbiting spark -->
+  <g>
+    <circle r="2.5" fill="#c4ff3e" filter="url(#softGlow)">
+      <animateMotion dur="6s" repeatCount="indefinite"
+        path="M 120 20 A 100 100 0 1 1 119.9 20 Z"/>
+    </circle>
+  </g>
+  <g>
+    <circle r="1.8" fill="#ffffff" opacity="0.8">
+      <animateMotion dur="9s" repeatCount="indefinite"
+        path="M 120 40 A 80 80 0 1 0 119.9 40 Z"/>
+    </circle>
+  </g>
+
+  <!-- Caption mark: "T·C" -->
+  <g font-family="monospace" font-size="11" fill="#c4ff3e" text-anchor="middle" opacity="0.6">
+    <text x="120" y="218" letter-spacing="2">THOR · COSMOS</text>
+  </g>
+</svg>
